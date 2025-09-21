@@ -31,8 +31,8 @@ strike_prices = []
 atm_strike = None
 ce_signals = []
 pe_signals = []
-atm_ce_plus20 = None   # User input
-atm_pe_plus20 = None   # User input
+atm_ce_plus20 = 20   # User input
+atm_pe_plus20 = 20   # User input
 option_chain_df = pd.DataFrame()
 expiry_date = "-"
 st_prefix = "NSE:NIFTY25923"   # Default value for ST
@@ -231,3 +231,4 @@ def place_order(symbol, price, side):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
