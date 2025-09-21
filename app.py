@@ -4,8 +4,8 @@ import pandas as pd
 import os
 
 # ---- Fyers Credentials ----
-client_id = "6POOEOIO05-100"   //"UBKM03VNIB-100"
-secret_key = "FIZIJR5W8S"   //"VCPXAFC291"
+client_id = "6POOEOIO05-100"   #"UBKM03VNIB-100"
+secret_key = "FIZIJR5W8S"   #"VCPXAFC291"
 redirect_uri = "https://algo-i2op.onrender.com//callback"
 grant_type = "authorization_code"
 response_type = "code"
@@ -231,6 +231,7 @@ def place_order(symbol, price, side):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
