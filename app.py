@@ -74,7 +74,7 @@ def index():
 @app.route("/login")
 def login():
     login_url = appSession.generate_authcode()
-    threading.Thread(target=lambda: webbrowser.open(login_url)).start()
+    threading.Thread(target=lambda: webbrowser.open_new(login_url)).start()  # Open in new window
     return redirect(login_url)
 
 @app.route("/callback")
@@ -224,8 +224,6 @@ def place_order(symbol, price, side):
         print("Order error:", e)
 
 
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
