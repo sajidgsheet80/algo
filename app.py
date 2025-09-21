@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from fyers_apiv3 import fyersModel
-import threading
-import webbrowser
 import pandas as pd
 import os
+
 # ---- Fyers Credentials ----
 client_id = "UBKM03VNIB-100"
 secret_key = "VCPXAFC291"
@@ -38,14 +37,13 @@ option_chain_df = pd.DataFrame()
 expiry_date = "-"
 st_prefix = "NSE:NIFTY25923"   # Default value for ST
 
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     global st_prefix, atm_ce_plus20, atm_pe_plus20
     if request.method == "POST":
-        # Capture ST prefix
         st_prefix = request.form.get("st_prefix", st_prefix).strip()
 
-        # Capture CE +20 threshold
         ce_input = request.form.get("atm_ce_plus20")
         if ce_input:
             try:
@@ -53,7 +51,6 @@ def index():
             except ValueError:
                 atm_ce_plus20 = None
 
-        # Capture PE +20 threshold
         pe_input = request.form.get("atm_pe_plus20")
         if pe_input:
             try:
@@ -71,11 +68,13 @@ def index():
                            expiry_date=expiry_date,
                            st_prefix=st_prefix)
 
+
 @app.route("/login")
 def login():
     login_url = appSession.generate_authcode()
-    threading.Thread(target=lambda: webbrowser.open_new(login_url)).start()  # Open in new window
+    # ✅ Just return the URL (so the new tab handles the redirect)
     return redirect(login_url)
+
 
 @app.route("/callback")
 def callback():
@@ -94,6 +93,7 @@ def callback():
         log_path=""
     )
     return redirect(url_for("index"))
+
 
 @app.route("/fetch")
 def fetch_option_chain():
@@ -133,7 +133,6 @@ def fetch_option_chain():
             ce_ltp = atm_row["CE_LTP"].values[0]
             pe_ltp = atm_row["PE_LTP"].values[0]
 
-            # Signal logic using user-defined thresholds
             if atm_ce_plus20 and ce_ltp > atm_ce_plus20 and not ce_signals:
                 ce_signals.append({"strike": atm_strike, "price": ce_ltp})
                 place_order(f"{st_prefix}{atm_strike}CE", ce_ltp, side=1)
@@ -146,6 +145,7 @@ def fetch_option_chain():
 
     except Exception as e:
         return str(e)
+
 
 @app.route("/buy_ce")
 def buy_ce():
@@ -162,6 +162,7 @@ def buy_ce():
         return str(e)
     return redirect(url_for("index"))
 
+
 @app.route("/buy_pe")
 def buy_pe():
     global atm_strike, pe_signals
@@ -176,6 +177,7 @@ def buy_pe():
     except Exception as e:
         return str(e)
     return redirect(url_for("index"))
+
 
 @app.route("/exit")
 def exit_orders():
@@ -192,6 +194,7 @@ def exit_orders():
     pe_signals.clear()
     return redirect(url_for("index"))
 
+
 @app.route("/reset")
 def reset_constants():
     global atm_ce_plus20, atm_pe_plus20, ce_signals, pe_signals
@@ -200,6 +203,7 @@ def reset_constants():
     ce_signals.clear()
     pe_signals.clear()
     return redirect(url_for("index"))
+
 
 def place_order(symbol, price, side):
     try:
