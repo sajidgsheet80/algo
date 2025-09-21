@@ -35,7 +35,7 @@ atm_ce_plus20 = 10   # User input
 atm_pe_plus20 = 10   # User input
 option_chain_df = pd.DataFrame()
 expiry_date = "-"
-st_prefix = "NSE:NIFTY25923"   # Default value for ST
+st_prefix = "NSE:NIFTY25921"   # Default value for ST
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -231,6 +231,7 @@ def place_order(symbol, price, side):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
 
 
 
