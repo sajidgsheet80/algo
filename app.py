@@ -3,7 +3,7 @@ from fyers_apiv3 import fyersModel
 import threading
 import webbrowser
 import pandas as pd
-
+import os
 # ---- Fyers Credentials ----
 client_id = "UBKM03VNIB-100"
 secret_key = "VCPXAFC291"
@@ -223,5 +223,9 @@ def place_order(symbol, price, side):
     except Exception as e:
         print("Order error:", e)
 
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
+
