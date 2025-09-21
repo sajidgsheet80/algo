@@ -131,21 +131,22 @@
         <label for="st_prefix">ST:</label>
         <input type="text" id="st_prefix" name="st_prefix" value="{{ st_prefix }}" required>
 
-        <label for="atm_ce_plus20">CE:</label>
+        <label for="atm_ce_plus20">CE +20:</label>
         <input type="number" step="0.01" id="atm_ce_plus20" name="atm_ce_plus20"
                value="{{ atm_ce_plus20 if atm_ce_plus20 else '' }}" required>
 
-        <label for="atm_pe_plus20">PE :</label>
+        <label for="atm_pe_plus20">PE +20:</label>
         <input type="number" step="0.01" id="atm_pe_plus20" name="atm_pe_plus20"
                value="{{ atm_pe_plus20 if atm_pe_plus20 else '' }}" required>
 
         <button type="submit">Update</button>
     </form>
 
-    <p>CE  Threshold: {{ atm_ce_plus20 }} | PE  Threshold: {{ atm_pe_plus20 }}</p>
+    <p>CE +20 Threshold: {{ atm_ce_plus20 }} | PE +20 Threshold: {{ atm_pe_plus20 }}</p>
 
     <div style="text-align:center; margin-bottom:20px;">
-        <a href="/login"><button>Login</button></a>
+        <!-- ✅ Login opens in new tab -->
+        <a href="/login" target="_blank" rel="noopener noreferrer"><button>Login</button></a>
         <a href="/fetch"><button>Fetch</button></a>
         <a href="/buy_ce"><button>Buy CE</button></a>
         <a href="/buy_pe"><button>Buy PE</button></a>
@@ -172,4 +173,3 @@
     <ul>{% for s in pe_signals %}<li>{{ s }}</li>{% endfor %}</ul>
 </body>
 </html>
-
