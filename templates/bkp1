@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sajid Shaikh Algo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #eef2f3, #dfe9f3);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        input {
+            padding: 6px 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #2980b9;
+            outline: none;
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #2980b9;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #1c5980;
+            transform: scale(1.05);
+        }
+
+        a button {
+            margin: 5px;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background: #2980b9;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        table tr:hover {
+            background: #f1f7ff;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 30px;
+            color: #2c3e50;
+        }
+
+        ul {
+            width: 50%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        ul li {
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+        }
+
+        ul li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Sajid Shaikh Algo Terminal</h2>
+    <p>Expiry: {{ expiry_date }} | ATM Strike: {{ atm_strike }}</p>
+
+    <!-- Input form for ST, CE+20, PE+20 -->
+    <form method="POST" action="/">
+        <label for="st_prefix">ST:</label>
+        <input type="text" id="st_prefix" name="st_prefix" value="{{ st_prefix }}" required>
+
+        <label for="atm_ce_plus20">CE :</label>
+        <input type="number" step="0.01" id="atm_ce_plus20" name="atm_ce_plus20"
+               value="{{ atm_ce_plus20 if atm_ce_plus20 else '' }}" required>
+
+        <label for="atm_pe_plus20">PE :</label>
+        <input type="number" step="0.01" id="atm_pe_plus20" name="atm_pe_plus20"
+               value="{{ atm_pe_plus20 if atm_pe_plus20 else '' }}" required>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <p>CE  Threshold: {{ atm_ce_plus20 }} | PE  Threshold: {{ atm_pe_plus20 }}</p>
+
+    <div style="text-align:center; margin-bottom:20px;">
+        <!-- ✅ Login opens in new tab -->
+        <a href="/login" target="_blank" rel="noopener noreferrer"><button>Login</button></a>
+        <a href="/fetch"><button>Fetch</button></a>
+        <a href="/buy_ce"><button>Buy CE</button></a>
+        <a href="/buy_pe"><button>Buy PE</button></a>
+        <a href="/exit"><button>Exit Orders</button></a>
+        <a href="/reset"><button>Reset Constants</button></a>
+    </div>
+
+    <h3>Option Chain:</h3>
+    <table border="1" cellpadding="5">
+        <tr><th>Strike</th><th>CE LTP</th><th>PE LTP</th></tr>
+        {% for row in option_chain %}
+            <tr>
+                <td>{{ row.strike_price }}</td>
+                <td>{{ row.CE_LTP }}</td>
+                <td>{{ row.PE_LTP }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Captured CE Signals</h3>
+    <ul>{% for s in ce_signals %}<li>{{ s }}</li>{% endfor %}</ul>
+
+    <h3>Captured PE Signals</h3>
+    <ul>{% for s in pe_signals %}<li>{{ s }}</li>{% endfor %}</ul>
+</body>
+</html>
